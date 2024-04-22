@@ -87,12 +87,12 @@ public class EditActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (contact.getPhone().equals("1"))
+                if (contact.getPhone().equals("Y"))
                     photo.setImageResource(R.drawable.happy);
-                else if (contact.getPhone().equals("2"))
-                    photo.setImageResource(R.drawable.midface);
-                else
+                else if (contact.getPhone().equals("N"))
                     photo.setImageResource(R.drawable.madface);
+                else
+                    photo.setImageResource(R.drawable.midface);
 
                 Intent i = new Intent();
                 i.putExtra("contact", contact);

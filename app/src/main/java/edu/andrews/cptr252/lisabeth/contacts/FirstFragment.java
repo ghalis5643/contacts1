@@ -34,6 +34,7 @@ public class FirstFragment extends Fragment {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("info", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
+        editConfirmPassword.setVisibility(View.INVISIBLE);
 
         btnConfrim.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -41,6 +42,7 @@ public class FirstFragment extends Fragment {
                     // Retrieve entered username and password
                     String username = editName.getText().toString();
                     String password = editPassword.getText().toString();
+                    editor.apply();
 
                     // Implement authentication logic here
                     if (username.equals("Admin") && password.equals("123")) {
@@ -56,7 +58,8 @@ public class FirstFragment extends Fragment {
         btnNewUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                editConfirmPassword.setVisibility(View.VISIBLE);
+                editor.apply();
             }
         });
 
