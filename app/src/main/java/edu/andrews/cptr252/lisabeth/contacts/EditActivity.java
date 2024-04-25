@@ -22,9 +22,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -41,11 +43,12 @@ public class EditActivity extends AppCompatActivity {
     private EditText name;
 
     private EditText address;
-    private EditText phone;
+    //private Spinner payment;
+    private EditText payment;
     private Button save;
     private InfoContact contact;
 
-    private Drawable happy;
+    private Drawable image;
 
     private final int CAMERA = 1;
     private final int GALLERY = 2;
@@ -57,20 +60,25 @@ public class EditActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit);
         contact = getIntent().getParcelableExtra("contact");
 
+//        String[] categories = {"Payments Made", "Overdue", "Waiting for Payment"};
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, categories);
+//        payment.setAdapter(adapter);
+
 
         photo = findViewById(R.id.btnImage);
         name = findViewById(R.id.editName);
 
         address = findViewById(R.id.editAddress);
-        phone = findViewById(R.id.editPhone);
+        payment = findViewById(R.id.editPhone);
         save = findViewById(R.id.btnSave);
 
         name.setText(contact.getName());
-        phone.setText(contact.getPhone());
+        payment.setText(contact.getPhone());
+        //payment.setSelection(contact.getPhone());
         address.setText(contact.getAddress());
 
         File imgFile = new File(contact.getPhoto());
-        if(imgFile.exists()){
+        if (imgFile.exists()) {
             Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             photo.setImageBitmap(bitmap);
         }
@@ -80,19 +88,38 @@ public class EditActivity extends AppCompatActivity {
             public void onClick(View v) {
                 contact.setName(name.getText().toString());
                 contact.setAddress(address.getText().toString());
-                contact.setPhone(phone.getText().toString());
+                contact.setPhone(payment.getText().toString());
+                //contact.setPhone(payment.getSelectedItem().toString());
 
-                if(contact.getName().equals("") || contact.getAddress().equals("")){
+                if (contact.getName().equals("") || contact.getAddress().equals("")) {
                     Toast.makeText(EditActivity.this, "No Name or Address Entered", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                if (contact.getPhone().equals("Y"))
+                if (contact.getPhone().equals("Payments Made")) {
                     photo.setImageResource(R.drawable.happy);
-                else if (contact.getPhone().equals("N"))
+                    Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.happy);
+
+                    saveImage(largeIcon);
+                    contact.setPhoto(saveImage(largeIcon));
+                    photo.setImageBitmap(largeIcon);
+
+
+                } else if (contact.getPhone().equals("Overdue")) {
                     photo.setImageResource(R.drawable.madface);
-                else
+                    Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.madface);
+
+                    saveImage(largeIcon);
+                    contact.setPhoto(saveImage(largeIcon));
+                    photo.setImageBitmap(largeIcon);
+                } else {
                     photo.setImageResource(R.drawable.midface);
+                    Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.midface);
+
+                    saveImage(largeIcon);
+                    contact.setPhoto(saveImage(largeIcon));
+                    photo.setImageBitmap(largeIcon);
+                }
 
                 Intent i = new Intent();
                 i.putExtra("contact", contact);
@@ -100,10 +127,7 @@ public class EditActivity extends AppCompatActivity {
                 finish();
             }
         });
-
     }
-
-
 
     private  String saveImage(Bitmap bitmap){
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();

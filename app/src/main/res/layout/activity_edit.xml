@@ -48,7 +48,7 @@
         android:layout_height="44dp"
         android:layout_marginBottom="32dp"
         android:ems="10"
-        android:hint="Payment made(Y/N)"
+        android:hint="Payment (Y/N)"
         app:layout_constraintBottom_toTopOf="@+id/editAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
