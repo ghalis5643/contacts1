@@ -42,21 +42,32 @@ public class EditActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit);
         contact = getIntent().getParcelableExtra("contact");
 
-        String[] categories = {"Payments Made", "Overdue", "Waiting for Payment"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.activity_edit, categories);
-        payment.setAdapter(adapter);
 
 
         photo = findViewById(R.id.btnImage);
         name = findViewById(R.id.editName);
 
         address = findViewById(R.id.editAddress);
-        payment = findViewById(R.id.editPayment);
+//        payment = findViewById(R.id.editPayment);
         save = findViewById(R.id.btnSave);
+        payment = findViewById(R.id.editPayment);
+
+        String[] categories = {"Payments Made", "Overdue", "Waiting for Payment"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
+        payment.setAdapter(adapter);
 
         name.setText(contact.getName());
-        //payment.setText(contact.getPhone());
-        payment.setSelection(Integer.parseInt(contact.getPhone()));
+     //   payment.setText(contact.getPhone());
+        try {
+            payment.setSelection(Integer.parseInt(contact.getPhone()));
+
+        }
+        catch (Exception e){
+            //Toast.makeText(this, "Num selected: "+e.toString(), Toast.LENGTH_SHORT).show();
+            //name.setText(e.toString());
+            payment.setSelection(0);
+        }
+
         address.setText(contact.getAddress());
 
         File imgFile = new File(contact.getPhoto());
