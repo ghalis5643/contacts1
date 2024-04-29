@@ -1,26 +1,13 @@
 package edu.andrews.cptr252.lisabeth.contacts;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
-import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -28,8 +15,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import com.google.android.material.snackbar.Snackbar;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -43,15 +28,12 @@ public class EditActivity extends AppCompatActivity {
     private EditText name;
 
     private EditText address;
-    //private Spinner payment;
-    private EditText payment;
+    //ArrayList<String> paymentList = new ArrayList<>();
+    private Spinner payment;
+    //private EditText payment;
     private Button save;
     private InfoContact contact;
 
-    private Drawable image;
-
-    private final int CAMERA = 1;
-    private final int GALLERY = 2;
     private final String IMAGE_DIR = "/contactPhotos";
 
     @Override
@@ -60,21 +42,21 @@ public class EditActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit);
         contact = getIntent().getParcelableExtra("contact");
 
-//        String[] categories = {"Payments Made", "Overdue", "Waiting for Payment"};
-//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, categories);
-//        payment.setAdapter(adapter);
+        String[] categories = {"Payments Made", "Overdue", "Waiting for Payment"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.activity_edit, categories);
+        payment.setAdapter(adapter);
 
 
         photo = findViewById(R.id.btnImage);
         name = findViewById(R.id.editName);
 
         address = findViewById(R.id.editAddress);
-        payment = findViewById(R.id.editPhone);
+        payment = findViewById(R.id.editPayment);
         save = findViewById(R.id.btnSave);
 
         name.setText(contact.getName());
-        payment.setText(contact.getPhone());
-        //payment.setSelection(contact.getPhone());
+        //payment.setText(contact.getPhone());
+        payment.setSelection(Integer.parseInt(contact.getPhone()));
         address.setText(contact.getAddress());
 
         File imgFile = new File(contact.getPhoto());
@@ -88,8 +70,8 @@ public class EditActivity extends AppCompatActivity {
             public void onClick(View v) {
                 contact.setName(name.getText().toString());
                 contact.setAddress(address.getText().toString());
-                contact.setPhone(payment.getText().toString());
-                //contact.setPhone(payment.getSelectedItem().toString());
+                //contact.setPhone(payment.getText().toString());
+                contact.setPhone(payment.getSelectedItem().toString());
 
                 if (contact.getName().equals("") || contact.getAddress().equals("")) {
                     Toast.makeText(EditActivity.this, "No Name or Address Entered", Toast.LENGTH_SHORT).show();

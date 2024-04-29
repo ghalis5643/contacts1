@@ -77,7 +77,7 @@ public class InfoContact implements Parcelable {
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeStringArray(new String[]{
-                getName(),getPhone(),getAddress(),getPhoto(), String.valueOf(getId())
+                getName(), getPhone(),getAddress(),getPhoto(), String.valueOf(getId())
         });
     }
 
