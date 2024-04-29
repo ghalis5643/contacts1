@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -59,7 +60,16 @@ public class EditActivity extends AppCompatActivity {
         name.setText(contact.getName());
      //   payment.setText(contact.getPhone());
         try {
-            payment.setSelection(Integer.parseInt(contact.getPhone()));
+
+
+            if(contact.getPhone().equals("Payments Made")){
+                payment.setSelection(0);
+            }else if(contact.getPhone().equals("Overdue")){
+                payment.setSelection(1);
+            }else if(contact.getPhone().equals("Waiting for Payment")){
+                payment.setSelection(2);
+            }
+
 
         }
         catch (Exception e){
